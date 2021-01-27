@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>Liberty-X Landing Controller</title>
+		<style type="text/css">
+			@font-face{
+				font-family: 'Chronica Pro';
+				src: url('/static/ChronicaPro-SemiLight.otf'), url('/static/ChronicaPro-Thin.otf');
+				font-weight: normal;
+			}
+			h1 { 
+				font-family: 'Chronica Pro';
+				font-weight: lighter;
+			}
+			body {
+				font-family: 'Chronica Pro';
+				background-color: #282c34;
+				text-align: center;
+				color: #d4e0ff;
+				background-image: url('/static/background.jpg');
+				background-repeat: no-repeat;
+				background-attachment: fixed;
+				background-size: cover;
+				background-position: center;
+			}
+			.main_container {
+				background-color: #00000090;
+				border-radius: 12px;
+				display: inline-block;
+				padding: 12px;
+			}
+			
+			.w3-button {
+				border-radius: 12px;
+				border:none;
+				display:inline-block;
+				padding:8px 16px;
+				vertical-align:middle;
+				overflow:hidden;
+				text-decoration:none;
+				color:black;
+				background-color:#d4e0ff;
+				text-align:center;
+				cursor:pointer;
+				font-size:24px;
+				white-space:nowrap
+			}
+			.w3-button:hover {
+				color:#000!important;
+				background-color:#ccc!important
+			}
+			#container {
+				margin-left: 20px;
+				text-align:left;
+				display: flex;                  /* establish flex container */
+				flex-direction: row;            /* default value; can be omitted */
+				flex-wrap: nowrap;              /* default value; can be omitted */
+				justify-content: space-between; /* switched from default (flex-start, see below) */
+			}
+			#container > div {
+			  width: 150px;
+			  height: 27px;
+			}
+			
+			#left{text-align:left;}
+			#right{text-align:right;}
+			input, textarea {
+				color: #d4e0ff;
+				border: 1px solid #d4e0ff;
+				border-radius: 4px;
+				background-color : #00000000; 
+
+			}
+			select {
+				color: #d4e0ff;
+				border: 1px solid #d4e0ff;
+				border-radius: 4px;
+				background-color : #00000000; 
+			}
+		</style>
+		<script>
+			function start_loop() {
+				var cnc_port_enabled = document.getElementById("cnc_port_enabled").checked;
+				var rf_port_enabled = document.getElementById("rf_port_enabled").checked;
+				var udp_ip_port_enabled = document.getElementById("udp_ip_port_enabled").checked;
+				
+				var cnc_port = cnc_port_enabled ? (document.getElementById("cnc_ports").value != '' ? document.getElementById("cnc_ports").value : 'none') : 'none';
+				var rf_port = rf_port_enabled ? (document.getElementById("rf_ports").value != '' ? document.getElementById("rf_ports").value : 'none') : 'none';
+				var udp_ip_port = udp_ip_port_enabled ? (document.getElementById("udp_ip_port").value != '' ? document.getElementById("udp_ip_port").value : 'none') : 'none';
+				
+				var camera_id = document.getElementById("camera_id").value;
+				var camera_exp = document.getElementById("camera_exp").value;
+				var landing_alt = document.getElementById("landing_alt").value;
+				window.location.href = '/start/' + camera_id + '/' + camera_exp + '/' + cnc_port + '/' + rf_port + '/' + udp_ip_port + '/' + landing_alt + '/';
+			}
+		</script>
+	</head>
+	<body>
+		<div class="main_container">
+			<h1>
+				<a style="color: #ff0000">L</a><a style="color: #ff7f00">ib</a><a style="color: #ffff00">er</a><a style="color: #00ff00">ty</a><a style="color: #0000ff">-</a><a style="color: #9400d3">X</a>
+				<span style="color: #d4e0ff">landing controller</span>
+			</h1>
+			<br>
+
+			<div id="container">
+				<div>
+					<input type="checkbox" id="cnc_port_enabled">
+					<label for="cnc_port_enabled"> CNC Port: </label>
+				</div>
+				<div><select id="cnc_ports" name="cnc_ports">
+					{% for port in cnc_ports %}
+						<option value="{{ port }}">{{ port }}</option>
+					{% endfor %}
+				</select></div>
+			</div>
+
+			<div id="container">
+				<div>
+					<input type="checkbox" id="rf_port_enabled">
+					<label for="rf_port_enabled"> RF Port: </label>
+				</div>
+				<div><select id="rf_ports" name="rf_ports">
+					{% for port in rf_ports %}
+						<option value="{{ port }}">{{ port }}</option>
+					{% endfor %}
+				</select></div>
+			</div>
+
+
+			<div id="container">
+				<div>
+					<input type="checkbox" id="udp_ip_port_enabled" checked>
+					<label for="udp_ip_port">UDP Ip/Port: </label>
+				</div>
+				<div><input type="text" id="udp_ip_port" placeholder="xxx.xxx.xxx.xxx:xxxx" value="192.168.0.21:9876" style="width: 9em;"></input></div>
+			</div>
+			<br>
+			<div id="container">
+				<div><label for="camera_id">Camera ID: </label></div>
+				<div><input id="camera_id" type="number" style="width: 3em;" value="2"></div>
+			</div>
+			
+			<div id="container">
+				<div><label for="camera_exp">Exposure: </label></div>
+				<div><input id="camera_exp" type="number" style="width: 3em;" value="-9"></div>
+			</div>
+			<br>
+			
+			<div id="container">
+				<div><label for="landing_alt">Landing height: </label></div>
+				<div>
+					<input id="landing_alt" type="number" style="width: 3em;" value="15">
+					<label for="landing_alt"> (cm.)</label>
+				</div>
+			
+			</div>
+			
+			<p><button class="w3-button" onclick="start_loop()">Start</button></p>
+		</div>
+	</body>
+</html>
